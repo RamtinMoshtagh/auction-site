@@ -1,0 +1,20 @@
+{
+  "name": "auction-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile-scss": "node-sass src/scss/custom.scss dist/css/style.css",
+    "watch-scss": "node-sass src/scss/custom.scss dist/css/style.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.0.1"
+  },
+  "devDependencies": {
+    "node-sass": "^6.0.0"
+  }
+}
+

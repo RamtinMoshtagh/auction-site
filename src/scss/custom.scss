@@ -1,0 +1,97 @@
+// Import Bootstrap
+@import "node_modules/bootstrap/scss/bootstrap";
+
+// Define custom colors with your color palette
+$color-light-gray: #dad7cd; // Light gray for backgrounds or light elements
+$color-light-green: #a3b18a; // Light green for secondary elements or accents
+$color-dark-green: #588157; // Dark green for primary elements
+$color-deep-green: #3a5a40; // Deep green for headers or strong elements
+$color-teal-green: #344e41; // Teal green for footer or contrasting elements
+
+// Apply custom colors to Bootstrap variables
+$theme-colors: (
+  "primary": $color-dark-green,
+  "secondary": $color-light-green
+);
+
+$body-bg: $color-light-gray;
+$body-color: $color-deep-green;
+$link-color: $color-teal-green;
+
+// Typography
+$font-family-base: 'Inter', sans-serif;
+$headings-font-family: 'Merriweather', serif;
+
+// Custom styles
+body {
+  font-family: $font-family-base;
+  background-color: $body-bg;
+  color: $body-color;
+}
+
+a {
+  color: $link-color;
+  &:hover {
+    color: darken($link-color, 10%);
+  }
+}
+
+// Header styles
+.header {
+  background-color: $color-deep-green;
+  color: white;
+}
+
+// Main content styles
+.main-content {
+  padding: 2rem;
+}
+
+// Footer styles
+.footer {
+  background-color: $color-teal-green;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+// Forms and buttons
+.btn-custom {
+  background-color: $color-dark-green;
+  color: white;
+  &:hover {
+    background-color: darken($color-dark-green, 10%);
+  }
+}
+
+.form-input {
+  border: 1px solid darken($color-light-gray, 10%);
+  &:focus {
+    border-color: $color-dark-green;
+  }
+}
+
+// Responsive design
+@media (min-width: 768px) {
+    .navbar {
+      // Example custom navbar styles for larger screens
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+    }
+  }
+  
+
+// Accessibility enhancements
+:focus {
+  outline: 2px solid $color-dark-green;
+  outline-offset: 2px;
+}
+
+// Ensure text remains readable and accessible
+@include media-breakpoint-up(sm) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  // Adjust other headings as needed
+}

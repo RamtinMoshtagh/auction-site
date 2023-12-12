@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auction Site</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="./dist/css/style.css" rel="stylesheet">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
+            <div class="container">
                 <a class="navbar-brand" href="#">Auction Site</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="#" id="home-link">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#" id="login-link">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#" id="register-link">Register</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="/index.html">Login</a></li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link active" href="/openListingPage/index.html">Listings</a></li>
                     </ul>
                 </div>
             </div>
@@ -27,13 +28,67 @@
     </header>
 
     <main id="main-content" class="container mt-4">
-        <!-- Content will be loaded here -->
+        <div class="row">
+            <div class="col-lg-6 col-md-12 login-section">
+                <h2>Login</h2>
+                <form id="login-form">
+                    <!-- Login form fields -->
+                    <div class="mb-3">
+                        <label for="login-email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="login-email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="login-password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <div class="d-flex justify-content-center mt-3 hidden-spinner" id="login-spinner">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <p class="mt-3">Need an account? <a href="#" id="show-register">Register Here</a></p>
+                </form>
+            </div>
+            <div class="col-lg-6 col-md-12" id="register-section">
+                <h2>Register</h2>
+                <form id="register-form">
+                    <!-- Registration form fields -->
+                    <div class="mb-3">
+                        <label for="register-name" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="register-name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="register-email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="register-email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="register-avatar" class="form-label">Avatar URL (optional)</label>
+                        <input type="url" class="form-control" id="register-avatar" placeholder="Enter avatar URL">
+                    </div>                    
+                    <div class="mb-3">
+                        <label for="register-password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="register-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Register</button>
+                    <div class="d-flex justify-content-center mt-3 hidden-spinner" id="register-spinner">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>                    
+                </form>
+            </div>
+        </div>
     </main>
 
     <footer class="text-center mt-4 py-3 bg-dark text-white">
         <p>&copy; 2023 Auction Site</p>
     </footer>
 
-    <script src="./js/main.js"></script>
+    <script type="module" src="/src/js/api/auth/login.js" defer></script>
+    <script type="module" src="src/js/api/auth/register.js" defer></script>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> 
 </body>
 </html>

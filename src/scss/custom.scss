@@ -70,6 +70,22 @@ a {
     border-color: $color-dark-green;
   }
 }
+#user-avatar {
+  width: 100px;
+  height: 100px;
+  // Add any additional styling here
+  border-radius: 50%; // Optional: makes the image circular
+  object-fit: cover; // Optional: ensures the image covers the area without stretching
+}
+
+#register-section {
+  display: none;
+}
+
+.hidden-spinner {
+  display: none !important;
+}
+
 
 // Responsive design
 @media (min-width: 768px) {

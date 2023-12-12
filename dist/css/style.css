@@ -9322,6 +9322,18 @@ a {
   .form-input:focus {
     border-color: #588157; }
 
+#user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover; }
+
+#register-section {
+  display: none; }
+
+.hidden-spinner {
+  display: none !important; }
+
 @media (min-width: 768px) {
   .navbar {
     display: flex;

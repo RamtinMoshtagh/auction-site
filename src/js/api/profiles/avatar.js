@@ -1,5 +1,4 @@
 export { updateAvatar };
-
 async function updateAvatar(username, avatarUrl) {
     try {
         const user = JSON.parse(localStorage.getItem('user'));
@@ -11,27 +10,18 @@ async function updateAvatar(username, avatarUrl) {
             },
             body: JSON.stringify({ avatar: avatarUrl })
         });
-
         if (!response.ok) {
             const errorResponse = await response.json(); // Parse error response
             console.error('API Error Response:', errorResponse); // Log detailed error response
             throw new Error(`Failed to update avatar: ${errorResponse.message || 'Unknown error'}`);
         }
-
         const updatedProfile = await response.json();
-        
-
-        // Update the image source
-        document.getElementById('avatar-image').src = updatedProfile.avatar;
-        const avatarElement = document.getElementById('user-avatar');
-        if (avatarElement) {
-            avatarElement.src = avatarUrl;
+        const userAvatarElement = document.getElementById('user-avatar');
+        if (userAvatarElement) {
+            userAvatarElement.src = avatarUrl;
         } else {
-            console.error('Avatar element not found');
+            console.error('User avatar element not found');
         }
-
-        console.log('Avatar updated:', updatedProfile);
-        return updatedProfile;
     } catch (error) {
         console.error('Error updating avatar:', error);
         throw error;

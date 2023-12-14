@@ -41,7 +41,35 @@ a {
   background-color: $color-deep-green;
   color: white;
 }
+$card-height: 100%;
 
+.card {
+    height: $card-height;
+    .seller-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      .seller-avatar {
+          width: 40px; 
+          height: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+          margin-right: 10px; 
+      }
+      .seller-name {
+          font-weight: bold;
+      }
+    }
+
+}
+#spinner-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 // Main content styles
 .main-content {
   padding: 2rem;
@@ -70,12 +98,31 @@ a {
     border-color: $color-dark-green;
   }
 }
+#login-error-message,
+#register-error-message {
+    margin-top: 1rem;
+}
+.hidden {
+  display: none;
+}
+.spinner-hidden {
+  display: none;
+}
+
+.spinner-visible {
+  display: inline-block;
+}
+
 #user-avatar {
   width: 100px;
   height: 100px;
-  // Add any additional styling here
-  border-radius: 50%; // Optional: makes the image circular
-  object-fit: cover; // Optional: ensures the image covers the area without stretching
+  border-radius: 50%;
+  object-fit: cover;
+}
+.carousel {
+  &.empty-carousel {
+    display: none;
+  }
 }
 
 #register-section {
@@ -87,27 +134,41 @@ a {
 }
 
 
-// Responsive design
 @media (min-width: 768px) {
     .navbar {
-      // Example custom navbar styles for larger screens
       display: flex;
       justify-content: space-between;
       padding: 1rem 2rem;
     }
-  }
-  
+}
+@media (min-width: 768px) {
+  .forms-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
 
-// Accessibility enhancements
+      .row {
+          flex-grow: 1;
+          max-width: 900px;
+          margin: 0 auto;
+      }
+
+      .login-section,
+      #register-section {
+          margin: 0 auto;
+      }
+  }
+}
+
+
 :focus {
   outline: 2px solid $color-dark-green;
   outline-offset: 2px;
 }
 
-// Ensure text remains readable and accessible
 @include media-breakpoint-up(sm) {
   h1 { font-size: 2rem; }
   h2 { font-size: 1.75rem; }
   h3 { font-size: 1.5rem; }
-  // Adjust other headings as needed
 }

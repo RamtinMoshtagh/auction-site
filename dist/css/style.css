@@ -9302,6 +9302,28 @@ a {
   background-color: #3a5a40;
   color: white; }
 
+.card {
+  height: 100%; }
+  .card .seller-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; }
+    .card .seller-info .seller-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px; }
+    .card .seller-info .seller-name {
+      font-weight: bold; }
+
+#spinner-container {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+
 .main-content {
   padding: 2rem; }
 
@@ -9322,11 +9344,27 @@ a {
   .form-input:focus {
     border-color: #588157; }
 
+#login-error-message,
+#register-error-message {
+  margin-top: 1rem; }
+
+.hidden {
+  display: none; }
+
+.spinner-hidden {
+  display: none; }
+
+.spinner-visible {
+  display: inline-block; }
+
 #user-avatar {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   object-fit: cover; }
+
+.carousel.empty-carousel {
+  display: none; }
 
 #register-section {
   display: none; }
@@ -9339,6 +9377,20 @@ a {
     display: flex;
     justify-content: space-between;
     padding: 1rem 2rem; } }
+
+@media (min-width: 768px) {
+  .forms-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; }
+    .forms-container .row {
+      flex-grow: 1;
+      max-width: 900px;
+      margin: 0 auto; }
+    .forms-container .login-section,
+    .forms-container #register-section {
+      margin: 0 auto; } }
 
 :focus {
   outline: 2px solid #588157;

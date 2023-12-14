@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Closed Listings</title>
+    <title>Closed Listings - Auction Site</title>
+    <meta name="description" content="Browse and bid on exciting items up for auction. Find amazing deals on Closed Listings.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/dist/css/style.css" rel="stylesheet">
 </head>
@@ -11,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#">Listings</a>
+                <a class="navbar-brand" href="/">Listings</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -24,84 +25,82 @@
         </nav>
     </header>
 
-<main class="container mt-4">
+    <main class="container mt-4" role="main">
         <h1>Listings</h1>
         <p>Browse through all the exciting items up for auction!</p>
- <!-- Create listing Section -->
-    <section class="create-listing-section mt-3">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCreateListing" aria-expanded="false" aria-controls="collapseCreateListing">
-                        Create Listing
-                    </button>
-                </h5>
-            </div>
 
-            <div id="collapseCreateListing" class="collapse" aria-labelledby="headingCreateListing">
-                <div class="card-body">
-                    <form id="create-listing-form">
-                        <div class="mb-3">
-                            <label for="listing-title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="listing-title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="listing-description" class="form-label">Description</label>
-                            <textarea class="form-control" id="listing-description"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="listing-tags" class="form-label">Tags (comma-separated)</label>
-                            <input type="text" class="form-control" id="listing-tags">
-                        </div>
-                        <div class="mb-3">
-                            <label for="listing-media" class="form-label">Media URLs (comma-separated)</label>
-                            <input type="text" class="form-control" id="listing-media">
-                        </div>
-                        <div class="mb-3">
-                            <label for="listing-end-date" class="form-label">End Date</label>
-                            <input type="datetime-local" class="form-control" id="listing-end-date" required>
-                        </div>
-                        <button type="submit" class="btn btn-success">Create Listing</button>
-                    </form>
+        <!-- Create Listing Section -->
+        <section class="create-listing-section mt-3">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCreateListing" aria-expanded="false" aria-controls="collapseCreateListing">
+                            Create Listing
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseCreateListing" class="collapse" aria-labelledby="headingCreateListing">
+                    <div class="card-body">
+                        <form id="create-listing-form" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="listing-title" class="form-label">Title:</label>
+                                <input type="text" class="form-control" id="listing-title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="listing-description" class="form-label">Description:</label>
+                                <textarea class="form-control" id="listing-description"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="listing-tags" class="form-label">Tags (comma-separated):</label>
+                                <input type="text" class="form-control" id="listing-tags">
+                            </div>
+                            <div class="mb-3">
+                                <label for="listing-media" class="form-label">Media URLs (comma-separated):</label>
+                                <input type="text" class="form-control" id="listing-media" placeholder="Enter image URLs, separated by commas">
+                            </div>                        
+                            <div class="mb-3">
+                                <label for="listing-end-date" class="form-label">End Date:</label>
+                                <input type="datetime-local" class="form-control" id="listing-end-date" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Create Listing</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
         <!-- Listings Display Section -->
         <section id="listings-section" class="listings-section">
-            <!-- Listings will be dynamically inserted here -->
+            <h2 class="visually-hidden">Listings</h2>
         </section>
-    
-            <!-- Bid Modal-->
-    <section>
-       <div class="modal fade" id="bidModal" tabindex="-1" aria-labelledby="bidModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="bidModalLabel">Place Your Bid</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Bid form and other content will be dynamically inserted here -->
-                    <div id="bid-response-container"></div> <!-- Bid response will be displayed here -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Submit Bid</button>
+
+        <!-- Modal Section (You can modify this section as needed) -->
+        <section>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header"></div>
+                    <div class="modal-body"></div>
                 </div>
             </div>
+        </section>
+
+        <!-- Bid Form (You can modify this section as needed) -->
+        <form id="bid-form"></form>
+
+        <!-- Spinner Container -->
+        <div id="spinner-container" style="display: none;">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
-    </div>
-</section>
-</main>
+    </main>
 
     <footer class="text-center mt-4 py-3 bg-dark text-white">
         <p>&copy; 2023 Auction Site</p>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="../src/js/api/closedListing/closedListing.js"></script>
-   
     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="../src/js/api/closedListing/closedListing.js" defer></script>
+    <script type="module" src="../src/js/api/profiles/bid.js" defer></script>
 </body>
 </html>

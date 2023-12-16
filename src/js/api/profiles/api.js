@@ -1,10 +1,15 @@
 export { createListing, addBidToListing, fetchListings, deleteListing };
 
-// Function to create a new listing
-async function createListing(listingData) {
-    handleCreateListingSpinner(true); // Show spinner
+async function getUser() {
+    try {
+        return JSON.parse(localStorage.getItem('user'));
+    } catch (e) {
+        throw new Error('User data not available');
+    }
+}
 
-    const user = JSON.parse(localStorage.getItem('user'));
+async function createListing(listingData) {
+    const user = await getUser();
     try {
         const response = await fetch('https://api.noroff.dev/api/v1/auction/listings', {
             method: 'POST',
@@ -16,73 +21,70 @@ async function createListing(listingData) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to create listing');
+            const errorResponse = await response.json();
+            throw new Error(errorResponse.message || 'Failed to create listing');
         }
 
-        const newListing = await response.json();
-        return newListing;
+        return await response.json();
     } catch (error) {
-        console.error('Error creating listing:', error);
-        throw error; // Rethrow the error for further handling
-    } finally {
-        handleCreateListingSpinner(false); // Hide spinner
+        throw error;
     }
 }
 
-// Function to add a bid to a listing
 async function addBidToListing(listingId, bidAmount) {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const response = await fetch(`https://api.noroff.dev/api/v1/auction/listings/${listingId}/bids`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.accessToken}`
-        },
-        body: JSON.stringify({ amount: Number(bidAmount) }) // Ensure bidAmount is a number
-    });
+    const user = await getUser();
+    try {
+        const response = await fetch(`https://api.noroff.dev/api/v1/auction/listings/${listingId}/bids`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.accessToken}`
+            },
+            body: JSON.stringify({ amount: Number(bidAmount) })
+        });
 
-    if (!response.ok) {
-        const errorResponse = await response.json();
-        console.error('API Error Response:', errorResponse);
-        throw new Error(`Failed to add bid: ${errorResponse.message || 'Unknown error'}`);
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(errorResponse.message || 'Failed to add bid');
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
     }
-
-    return await response.json();
 }
 
-// Function to fetch active listings with bids
 async function fetchListings(tag = '') {
     try {
         let url = `https://api.noroff.dev/api/v1/auction/listings?_bids=true&_seller=true&_active=true`;
         if (tag) {
             url += `&_tag=${encodeURIComponent(tag)}`;
         }
+
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`Failed to fetch listings: ${response.status}`);
         }
-        const listings = await response.json();
-        return listings;
+        return await response.json();
     } catch (error) {
-        console.error('Error fetching listings:', error);
-        return []; // Return an empty array in case of error
+        throw error;
     }
 }
 
 async function deleteListing(id) {
+    const user = await getUser();
     try {
-        const user = JSON.parse(localStorage.getItem('user'));
-        await fetch(`https://api.noroff.dev/api/v1/auction/listings/${id}`, {
+        const response = await fetch(`https://api.noroff.dev/api/v1/auction/listings/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${user.accessToken}`
             }
         });
 
-        // Remove the listing from the display
-        document.getElementById(`listing-${id}`).remove();
+        if (!response.ok) {
+            throw new Error(`Failed to delete listing: ${response.status}`);
+        }
     } catch (error) {
-        console.error('Error deleting listing:', error);
+        throw error;
     }
 }
-

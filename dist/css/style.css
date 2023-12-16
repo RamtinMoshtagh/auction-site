@@ -9317,6 +9317,17 @@ a {
     .card .seller-info .seller-name {
       font-weight: bold; }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0; }
+
 #spinner-container {
   display: none;
   position: fixed;
@@ -9344,9 +9355,33 @@ a {
   .form-input:focus {
     border-color: #588157; }
 
+#register-section {
+  display: none; }
+
 #login-error-message,
-#register-error-message {
+#register-error-message,
+#closed-listing-error-message,
+#open-listing-error-message {
+  display: none;
   margin-top: 1rem; }
+  #login-error-message.error-message-active,
+  #register-error-message.error-message-active,
+  #closed-listing-error-message.error-message-active,
+  #open-listing-error-message.error-message-active {
+    display: block; }
+
+#create-listing-success-message {
+  color: green;
+  margin-top: 10px;
+  display: none; }
+
+.d-none {
+  display: none; }
+
+#error-message {
+  display: none;
+  color: red;
+  margin-top: 10px; }
 
 .hidden {
   display: none; }
@@ -9364,9 +9399,6 @@ a {
   object-fit: cover; }
 
 .carousel.empty-carousel {
-  display: none; }
-
-#register-section {
   display: none; }
 
 .hidden-spinner {

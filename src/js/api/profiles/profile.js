@@ -1,11 +1,10 @@
 import { getUserProfile } from '/src/js/api/profiles/user.js';
 import { displayUserCredits } from '/src/js/api/profiles/credit.js';
 import { updateAvatar } from '/src/js/api/profiles/avatar.js';
-import { deleteListing } from '/src/js/api/profiles/api.js';
+import { handleDeleteListing } from '/src/js/api/profiles/eventHandlers.js';
 
 const UserProfile = {
     currentUserProfile: null,
-
     async load() {
         try {
             this.currentUserProfile = await getUserProfile();
@@ -45,14 +44,11 @@ function setupUpdateAvatarForm() {
             }
             try {
                 await updateAvatar(UserProfile.currentUserProfile.name, avatarUrl);
-                console.log('Avatar updated');
             } catch (error) {
                 displayError('Error updating avatar: ' + error.message);
             }
         });
-    } else {
-        console.error('Avatar form not found');
-    }
+    } return;
 }
 
 async function fetchUserActiveListings(username) {
@@ -77,10 +73,6 @@ async function fetchUserActiveListings(username) {
 
 function displayActiveListings(listings) {
     const listingsContainer = document.getElementById('active-listings-container');
-    if (!listingsContainer) {
-        console.error('Active listings container not found');
-        return;
-    }
 
     listingsContainer.innerHTML = '';
     const row = document.createElement('div');
@@ -222,15 +214,6 @@ function attachDeleteListener(listingId) {
     });
 }
 
-function handleDeleteListing(id) {
-    deleteListing(id).then(() => {
-        console.log('Listing deleted:', id);
-        fetchUserActiveListings(UserProfile.currentUserProfile.name);
-    }).catch(error => {
-        displayError('Error deleting listing: ' + error.message);
-    });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     UserProfile.load();
     setupUpdateAvatarForm();
@@ -238,17 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function displayError(message) {
     const errorContainer = document.getElementById('error-container');
-    if (!errorContainer) {
-        console.error('Error container element is missing in the UI');
-        return;
-    }
-
     errorContainer.textContent = message;
-    errorContainer.style.display = 'block'; // Assuming the container is hidden by default
+    errorContainer.style.display = 'block';
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    UserProfile.load();
-    setupUpdateAvatarForm();
-});
-

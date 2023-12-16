@@ -1,49 +1,61 @@
-
 export { handleBidSubmission, fetchListingById };
 import { addBidToListing } from "/src/js/api/profiles/api.js";
 
-// Function to handle bid submission
 async function handleBidSubmission(event, listingId) {
     event.preventDefault();
     const bidAmountInput = document.getElementById(`bid-amount-${listingId}`);
-    const bidAmount = bidAmountInput.value;
     const bidResponseContainer = document.getElementById(`bid-response-${listingId}`);
 
+    if (!bidAmountInput || !bidResponseContainer) {
+        return;
+    }
+
+    const bidAmount = parseFloat(bidAmountInput.value);
+    
     try {
-        const bidResponse = await addBidToListing(listingId, bidAmount);
-        console.log('Bid placed:', bidResponse);
-
-        // Fetch the updated listing to get the latest bid details
-        const updatedListing = await fetchListingById(listingId);
-        const latestBidAmount = updatedListing.bids && updatedListing.bids.length > 0 
-            ? Math.max(...updatedListing.bids.map(bid => bid.amount))
-            : bidAmount;
-
-        // Update the UI with the latest bid details
-        bidResponseContainer.innerHTML = `<p class="text-success">Bid of ${latestBidAmount} placed successfully!</p>`;
-        bidAmountInput.value = ''; // Reset the input field
-    } catch (error) {
-        console.error('Error placing bid:', error);
-        // Check if the error message is about the bid amount being too low
-        if (error.message.includes("Your bid must be higher than the current bid")) {
-            alert("Your bid must be higher than the current bid");
+        const listing = await fetchListingById(listingId);
+        if (!listing) {
+            throw new Error('Listing not found');
         }
-        bidResponseContainer.innerHTML = `<p class="text-danger">Error placing bid: ${error.message}</p>`;
+
+        const highestBid = Array.isArray(listing.bids) && listing.bids.length > 0 
+                           ? parseFloat(listing.bids[0].amount) 
+                           : 0;
+        
+        if (bidAmount <= highestBid) {
+            bidResponseContainer.innerHTML = `<p class="text-danger">Your bid must be higher than the current highest bid (${highestBid}).</p>`;
+            return;
+        }
+
+        await addBidToListing(listingId, bidAmount);
+        const updatedListing = await fetchListingById(listingId);
+        const bidCount = updatedListing._count.bids;
+        bidResponseContainer.innerHTML = `<p class="text-success">Bid placed successfully! Total bids: ${bidCount}</p>`;
+        bidAmountInput.value = '';
+    } catch (error) {
+        bidResponseContainer.innerHTML = `<p class="text-danger">Your bid must be higher than the current highest bid: ${error.message}</p>`;
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const forms = document.querySelectorAll('.bid-form');
+    forms.forEach(form => {
+        form.addEventListener('submit', (event) => {
+            const listingId = form.getAttribute('id').replace('bid-form-', '');
+            handleBidSubmission(event, listingId);
+        });
+    });
+});
 
-// Function to fetch a specific listing by ID
 async function fetchListingById(listingId) {
     try {
         const response = await fetch(`https://api.noroff.dev/api/v1/auction/listings/${listingId}`);
         if (!response.ok) {
             throw new Error(`Failed to fetch listing: ${response.status}`);
         }
-        return await response.json();
+        const listingData = await response.json();
+        return listingData;
     } catch (error) {
-        console.error('Error fetching listing:', error);
         throw error;
     }
 }
-

@@ -1,4 +1,5 @@
-// Constants for API endpoints
+import { displayErrorMessage, clearErrorMessage } from '/src/js/api/auth/utils.js';
+
 const BASE_API_URL = 'https://api.noroff.dev/api/v1/auction';
 const LISTINGS_ENDPOINT = `${BASE_API_URL}/listings?_bids=true&_seller=true&_active=true`;
 
@@ -20,13 +21,12 @@ async function fetchAndDisplayListings(tag = '') {
         const listings = await fetchOpenListings(tag);
         displayOpenListings(listings);
     } catch (error) {
-        console.error('Error fetching open listings:', error);
-        displayErrorMessage('Error fetching listings. Please try again later.');
+        displayErrorMessage('Error fetching listings. Please try again later.', 'open-listing-error-message');
     }
 }
 
 async function fetchOpenListings(tag = '') {
-    clearErrorMessage();
+    clearErrorMessage('error-message');
     const url = buildListingUrl(tag);
 
     try {
@@ -36,8 +36,7 @@ async function fetchOpenListings(tag = '') {
         }
         return await response.json();
     } catch (error) {
-        console.error('Error fetching listings:', error);
-        displayErrorMessage('An error occurred while fetching listings.');
+        displayErrorMessage('An error occurred while fetching listings.', 'open-listing-error-message');
         return [];
     }
 }
@@ -51,26 +50,27 @@ function buildListingUrl(tag) {
 }
 
 function displayOpenListings(listings) {
-    const listingsContainer = document.getElementById('listings-section');
+    const listingsContainer = document.getElementById('listings-row');
+    listingsContainer.innerHTML = '';
+
     if (!listings.length) {
         listingsContainer.innerHTML = '<p>No listings found.</p>';
         return;
     }
 
-    const row = document.createElement('div');
-    row.className = 'row row-cols-1 row-cols-md-3 g-4';
-
     listings.forEach((listing, index) => {
-        row.innerHTML += createListingHtml(listing, index);
+        const listingHtml = createListingHtml(listing, index);
+        const listingElement = document.createElement('div');
+        listingElement.className = 'col-md-4'; // Remove extra 'col'
+        listingElement.innerHTML = listingHtml;
+        listingsContainer.appendChild(listingElement);
     });
-
-    listingsContainer.appendChild(row);
 }
 
 function createListingHtml(listing, index) {
-    const carouselId = `carouselExample${index}`;
-
+    const carouselId = `carouselActiveExample${index}`;
     let carouselHtml = '';
+
     if (listing.media && listing.media.length > 0) {
         const carouselIndicators = listing.media.map((_, idx) => 
             `<button type="button" data-bs-target="#${carouselId}" data-bs-slide-to="${idx}" ${idx === 0 ? 'class="active"' : ''} aria-label="Slide ${idx + 1}"></button>`
@@ -82,44 +82,51 @@ function createListingHtml(listing, index) {
             </div>`
         ).join('');
 
+        const carouselControls = `
+            <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        `;
+
         carouselHtml = `
             <div id="${carouselId}" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">${carouselIndicators}</div>
                 <div class="carousel-inner">${carouselItems}</div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                ${carouselControls}
             </div>
         `;
     }
 
-    const bidsInfo = listing.bids && listing.bids.length > 0 ? 
-        `Most Recent Bid: ${listing.bids[0].amount}` : 
+    const bidsInfo = listing.bids && listing.bids.length > 0 ?
+        `Most Recent Bid: ${listing.bids[0].amount}` :
         'No bids yet';
 
-    const sellerInfo = listing.seller ? 
-        `<div class="card-footer"><small class="text-body-secondary">${listing.seller.name}</small></div>` : 
+    const sellerInfo = listing.seller ?
+        `<small class="text-muted">${listing.seller.name}</small>` :
         '';
 
     return `
         <div class="col">
-            <div class="card h-100">
+            <div class="card">
                 ${carouselHtml}
                 <div class="card-body">
                     <h5 class="card-title">${listing.title}</h5>
                     <p class="card-text">${listing.description}</p>
-                    <p class="card-text"><small class="text-muted">Bid ends at: ${new Date(listing.endsAt).toLocaleString()}</small></p>
-                    <p class="card-text">${bidsInfo}</p>
                 </div>
-                ${sellerInfo}
+                <div class="card-footer">
+                    ${sellerInfo}
+                    <small class="text-muted">Bid ends at: ${new Date(listing.endsAt).toLocaleString()}</small>
+                    <br>
+                    <small class="text-muted">${bidsInfo}</small>
+                </div>
             </div>
         </div>
-    `;
+        `;
 }
 
 function isValidTag(tag) {
@@ -130,38 +137,23 @@ function isValidTag(tag) {
 function handleSearch() {
     const searchInput = document.getElementById('searchInput');
     const tag = searchInput.value.trim();
-
+    clearErrorMessage('open-listing-error-message');
     if (!isValidSearchInput(tag)) {
+        displayErrorMessage('Please enter a valid tag. Tags should only contain letters and numbers.', 'open-listing-error-message');
         return;
     }
-
     fetchAndDisplayListings(tag);
 }
 
 function isValidSearchInput(tag) {
     clearErrorMessage();
-
     if (!tag) {
         displayErrorMessage('Please enter a tag to search.');
         return false;
     }
-
     if (!isValidTag(tag)) {
         displayErrorMessage('Please enter a valid tag. Tags should only contain letters and numbers.');
         return false;
     }
-
     return true;
 }
-
-function clearErrorMessage() {
-    const errorMessageDiv = document.getElementById('error-message');
-    errorMessageDiv.style.display = 'none';
-}
-
-function displayErrorMessage(message) {
-    const errorMessageDiv = document.getElementById('error-message');
-    errorMessageDiv.textContent = message;
-    errorMessageDiv.style.display = 'block';
-}
-

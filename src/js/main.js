@@ -11,12 +11,10 @@ function setupForms() {
     if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
     }
-
     const registerForm = document.getElementById('register-form');
     if (registerForm) {
         registerForm.addEventListener('submit', handleRegister);
     }
-
     const showRegisterLink = document.getElementById('show-register');
     if (showRegisterLink) {
         showRegisterLink.addEventListener('click', (event) => {
@@ -24,7 +22,6 @@ function setupForms() {
             document.getElementById('register-section').style.display = 'block';
         });
     }
-
     const logoutLink = document.getElementById('logout-link');
     if (logoutLink) {
         logoutLink.addEventListener('click', (event) => {

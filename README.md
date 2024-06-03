@@ -3,6 +3,8 @@
 # Description
 Auction Site is a dynamic web application that allows users to participate in online auctions. Users can browse open and closed listings, place bids, create new listings, and manage their profiles.
 
+Check it out here: https://auction-it.netlify.app
+
 ## Features
 ### User Authentication: 
   - Secure login and registration system.

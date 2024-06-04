@@ -5,6 +5,8 @@ Auction Site is a dynamic web application that allows users to participate in on
 
 Check it out here: https://auction-it.netlify.app
 
+![Screenshot 2024-06-04 at 11 06 47](https://github.com/RamtinMoshtagh/auction-site/assets/95631899/2e3d5a0f-9d00-424f-af1d-5422495af636)
+
 ## Features
 ### User Authentication: 
   - Secure login and registration system.
@@ -16,6 +18,11 @@ Check it out here: https://auction-it.netlify.app
   - Users can view and update their profile information, including avatars.
 ### Search Functionality: 
   - Users can search listings based on tags.
+
+# Built With
+- JS
+- HTML
+- SCSS
 
 # Setup and Installation
 ### Prerequisites
@@ -45,8 +52,7 @@ To watch for changes in SCSS files and recompile automatically, run:
 ```bash
 npm run watch-scss
 ```
-
-# Running the Project
+ # Running the Project
 To start the project locally, open the "index.html" file in a web browser. Since this project is mainly front-end, no additional server setup is required.
 
 # Testing
@@ -78,7 +84,9 @@ To start the project locally, open the "index.html" file in a web browser. Since
 4. Push to the branch (git push origin feature/AmazingFeature).
 5. Open a pull request.
 
+
+# Contact
+https://www.linkedin.com/in/ramtin-moshtagh-4817a712a/
+
 # License
-- This project is licensed under the ISC License. See the LICENSE file for more details.
-
-
+- This project is licensed under the ISC License.
